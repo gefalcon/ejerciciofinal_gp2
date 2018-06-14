@@ -58,4 +58,14 @@ public class Cliente{
 	public String getTelefono() {
 		return telefono;
 	}	
+	public void listarClientes(boolean f){ //si se pasa false no se muestra la contraseña
+		System.out.println("USUARIO: " + login);
+		if(f)
+			System.out.println("CONTRASEÑA: " + passwd);
+		System.out.println("NOMBRE: " + nombre);
+		System.out.println("APELLIDOS: " + apellido);
+		System.out.println("DIRECCION: " + direccion);
+		System.out.println("TELEFONO: " + telefono);
+		System.out.println();
+	}
 }

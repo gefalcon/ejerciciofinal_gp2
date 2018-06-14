@@ -39,6 +39,34 @@ public class Main {
 		}while(n < 1 || n > 10);
 		return n;
 	}
+	private static void listarTodosClientes(Connection con, boolean f) throws SQLException{
+		Statement stm = con.createStatement();
+		ResultSet rs = stm.executeQuery("select count(LOGIN) as count from clientes");
+		rs.first();
+		Cliente[] cli = new Cliente[rs.getInt("count")];
+		rs = stm.executeQuery("select * from clientes");
+		int i = 0;
+		while(rs.next()){
+			cli[i] = new Cliente(rs.getString("LOGIN"), rs.getString("PASSWD"), rs.getString("PASSWD"), rs.getString("APELLIDO"), rs.getString("APELLIDO"), rs.getString("APELLIDO"));
+			i++;
+		}
+		for(i = 0; i < cli.length; i++)
+			cli[i].listarClientes(f);
+	}
+	private static void listarTodosActividades(Connection con, boolean f) throws SQLException{
+		Statement stm = con.createStatement();
+		ResultSet rs = stm.executeQuery("select count(ID) as count from actividades");
+		rs.first();
+		Actividad[] act = new Actividad[rs.getInt("count")];
+		rs = stm.executeQuery("select * from actividades");
+		int i = 0;
+		while(rs.next()){
+			act[i] = new Actividad(rs.getInt("ID"), rs.getString("NOMBRE"), rs.getString("NOMBRE_PABELLON"), rs.getString("DESCRIPCION"), rs.getString("INICIO"), rs.getDouble("PRECIO"), rs.getInt("PLAZAS_TOTALES"), rs.getInt("PLAZAS_OCUPADAS"));
+			i++;
+		}
+		for(i = 0; i < act.length; i++)
+			act[i].listarActividades(f);
+	}
 	public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException {
 		Class.forName("com.mysql.jdbc.Driver");
 		String url = "jdbc:mysql://localhost/ejerciciofinal";
@@ -71,10 +99,10 @@ public class Main {
 						
 						break;
 					case 7:
-						
+						listarTodosClientes(con, true);
 						break;
 					case 8:
-						
+						listarTodosActividades(con, true);
 						break;
 					case 9:
 						
@@ -93,7 +121,7 @@ public class Main {
 					opc2 = menuCliente();
 					switch(opc2){
 					case 1:
-						
+						listarTodosActividades(con, false);
 						break;
 					case 2:
 						

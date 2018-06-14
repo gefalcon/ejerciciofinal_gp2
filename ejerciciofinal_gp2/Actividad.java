@@ -10,11 +10,12 @@ public class Actividad {
 	private String descripcion;
 	private String inicio;
 	private Double precio;
-	private int plazas_ocupadas;
 	private int plazas_totales;
+	private int plazas_ocupadas;
 	
 	
-	Actividad(int id, String nombre, String nombre_pabellon, String descripcion, String inicio, Double precio,int plazas_ocupadas, int plazas_totales) {
+	
+	Actividad(int id, String nombre, String nombre_pabellon, String descripcion, String inicio, Double precio,int plazas_totales, int plazas_ocupadas) {
 		this.id = id;
 		this.nombre = nombre;
 		this.nombre_pabellon = nombre_pabellon;
@@ -111,5 +112,16 @@ public class Actividad {
 	public int getPlazas_totales() {
 		return plazas_totales;
 	}
-	
+	public void listarActividades(boolean f){ //si se pasa false no se mostrá el id 
+		if(f)
+			System.out.println("ID: " + id);
+		System.out.println("NOMBRE DE ACTIVIDAD: "+ nombre);
+		System.out.println("NOMBRE PABELLON: " + nombre_pabellon);
+		System.out.println("DESCRIPCION: " + descripcion);
+		System.out.println("FECHA INICIO: " + inicio);
+		System.out.println("PRECIO: " + precio);
+		System.out.println("PLAZAS TOTALES: " + plazas_totales);
+		System.out.println("PLAZAS OCUPADAS: " + plazas_ocupadas);
+		System.out.println();
+	}
 }
