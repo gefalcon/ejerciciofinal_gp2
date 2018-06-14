@@ -22,7 +22,15 @@ public class Main {
 		int n;
 		do{
 			System.out.println("*** GESTOR ***");
-			System.out.println("1.-");
+			System.out.println("1.- Añadir un cliente");
+			System.out.println("2.- Borrar un cliente");
+			System.out.println("3.- Añadir una actividad");
+			System.out.println("4.- Borrar una actividad");
+			System.out.println("5.- Añadir un pabellon");
+			System.out.println("6.- Borrar un pabellon");
+			System.out.println("7.- Listar todos los clientes");
+			System.out.println("8.- Listar todas las actividades");
+			System.out.println("9.- Listar todos los pabellones");
 			System.out.println("11.- Volver");
 			n = Integer.parseInt(leer.readLine());
 		}while(n < 1 || n > 11);
@@ -33,7 +41,8 @@ public class Main {
 		int n;
 		do{
 			System.out.println("*** CLIENTE ***");
-			System.out.println("1.-");
+			System.out.println("1.- Listar todas las actividades");
+			System.out.println("2.- Listar todos los pabellones");
 			System.out.println("10.- Volver");
 			n = Integer.parseInt(leer.readLine());
 		}while(n < 1 || n > 10);
@@ -101,6 +110,9 @@ public class Main {
 		Connection con = DriverManager.getConnection(url, "root","123456");
 		char opc1;
 		int opc2;
+		Cliente cli;
+		Actividad act;
+		Pabellones pab;
 		do{
 			opc1 = menuPrincipal();
 			switch(opc1){
@@ -109,22 +121,28 @@ public class Main {
 					opc2 = menuGestor();
 					switch(opc2){
 					case 1:
-						
+						cli = new Cliente();
+						cli.pedirdatos(con);
 						break;
 					case 2:
-						
+						cli = new Cliente();
+						cli.eliminarCliente(con);
 						break;
 					case 3:
-						
+						act = new Actividad();
+						act.añadirActividad(con.createStatement());
 						break;
 					case 4:
-						
+						act = new Actividad();
+						act.eliminarActividad(con.createStatement());
 						break;
 					case 5:
-						
+						pab = new Pabellones();
+						pab.añadirPab(con.createStatement());
 						break;
 					case 6:
-						
+						pab = new Pabellones();
+						pab.borrarPab(con.createStatement());
 						break;
 					case 7:
 						listarTodosClientes(con, true);
@@ -189,5 +207,6 @@ public class Main {
 				break;
 			}
 		}while(opc1 != 'D');
+		con.close();
 	}
 }
