@@ -7,6 +7,15 @@ public class Pabellones {
 
 	private String nompab,locpab;
 	
+	Pabellones(String nompab, String locpab) {
+		this.nompab = nompab;
+		this.locpab = locpab;
+	}
+	Pabellones() {
+		this.nompab = "";
+		this.locpab = "";
+	}
+	
 	public String pedirNom() throws IOException{
 		BufferedReader leer=new BufferedReader(new InputStreamReader(System.in));
 		String pab;
@@ -100,5 +109,16 @@ public class Pabellones {
 			System.out.println("Le informamos de que el pabellon "+nompab+" no se encuentra en nuestra base de datos.");
 		}
 		siNoExiste(stmt);
+	}
+	public String getNompab() {
+		return nompab;
+	}
+	public String getLocpab() {
+		return locpab;
+	}
+	public void listarPabellones(){
+		System.out.println("NOMBRE PABELLON: " + nompab);
+		System.out.println("LOCALIDAD: " + locpab);
+		System.out.println();
 	}
 }
