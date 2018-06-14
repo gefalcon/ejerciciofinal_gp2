@@ -4,7 +4,6 @@ import java.io.*;
 import java.sql.*;
 
 public class Actividad {
-	static BufferedReader leer = new BufferedReader (new InputStreamReader (System.in));
 	private int id;
 	private String nombre;
 	private String nombre_pabellon;
@@ -14,32 +13,56 @@ public class Actividad {
 	private int plazas_ocupadas;
 	private int plazas_totales;
 	
+	
+	Actividad(int id, String nombre, String nombre_pabellon, String descripcion, String inicio, Double precio,int plazas_ocupadas, int plazas_totales) {
+		this.id = id;
+		this.nombre = nombre;
+		this.nombre_pabellon = nombre_pabellon;
+		this.descripcion = descripcion;
+		this.inicio = inicio;
+		this.precio = precio;
+		this.plazas_ocupadas = plazas_ocupadas;
+		this.plazas_totales = plazas_totales;
+	}
+	Actividad() {
+		this.id = 0;
+		this.nombre = "";
+		this.nombre_pabellon = "";
+		this.descripcion = "";
+		this.inicio = "";
+		this.precio = (double) 0;
+		this.plazas_ocupadas = 0;
+		this.plazas_totales = 0;
+	}
 	public void añadirActividad(Statement stm) throws IOException, SQLException {
-			
+		BufferedReader leer = new BufferedReader (new InputStreamReader (System.in));
 		ResultSet rs = stm.executeQuery("select max(id) from actividades");
 		rs.next();
 		id = rs.getInt(1) + 1;
-		
-		System.out.println("Introduzca el nombre de la actividad");
-		nombre = leer.readLine();
-		
-		System.out.println("Introduzca el nombre del pabellón");
-		nombre_pabellon = leer.readLine();
-		
-		System.out.println("Introduzca la descripcion");
-		descripcion = leer.readLine();
-		
-		System.out.println("Introduzca la fecha de inicio");
-		inicio = leer.readLine();
-		
-		System.out.println("Introduzca el precio");
-		precio = Double.parseDouble(leer.readLine());
-		
+		do{
+			System.out.println("Introduzca el nombre de la actividad");
+			nombre = leer.readLine();
+		}while(nombre.length() == 0);
+		do{
+			System.out.println("Introduzca el nombre del pabellón");
+			nombre_pabellon = leer.readLine();
+		}while(nombre_pabellon.length() == 0);
+		do{
+			System.out.println("Introduzca la descripcion");
+			descripcion = leer.readLine();
+		}while(descripcion.length() == 0);
+		do{
+			System.out.println("Introduzca la fecha de inicio");
+			inicio = leer.readLine();
+		}while(inicio.length() == 0);
+		do{
+			System.out.println("Introduzca el precio");
+			precio = Double.parseDouble(leer.readLine());
+		}while(precio < 0);
 		do{
 			System.out.println("Introduzca el numero de plazas totales");
 			plazas_totales = Integer.parseInt(leer.readLine());
 		} while (plazas_totales < 0);	
-			
 		do{
 			System.out.println("Introduzca el numero de plazas ocupadas");
 			plazas_ocupadas = Integer.parseInt(leer.readLine());
@@ -51,7 +74,7 @@ public class Actividad {
 	}
 	
 	public void eliminarActividad(Statement stm) throws SQLException, NumberFormatException, IOException {
-		
+		BufferedReader leer = new BufferedReader (new InputStreamReader (System.in));
 		boolean validar = false;
 		do{
 			System.out.println("Introduzca el nombre del id de la actividad a eliminar");
@@ -63,6 +86,30 @@ public class Actividad {
 			}
 		} while (validar == false);
 		
+	}
+	public int getId() {
+		return id;
+	}
+	public String getNombre() {
+		return nombre;
+	}
+	public String getNombre_pabellon() {
+		return nombre_pabellon;
+	}
+	public String getDescripcion() {
+		return descripcion;
+	}
+	public String getInicio() {
+		return inicio;
+	}
+	public Double getPrecio() {
+		return precio;
+	}
+	public int getPlazas_ocupadas() {
+		return plazas_ocupadas;
+	}
+	public int getPlazas_totales() {
+		return plazas_totales;
 	}
 	
 }
