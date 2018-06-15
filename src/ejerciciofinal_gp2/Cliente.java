@@ -38,7 +38,7 @@ public class Cliente{
 		System.out.println("Introducir el login del usuario ");
 		login=leer.readLine();
 		
-		}while(existe(con, "SELECT login from clientes where login = "+login+""));
+		}while(existe(con, "SELECT LOGIN from clientes where LOGIN = '"+login+"'"));
 		do{
 			System.out.println("Introducir la contraseña: ");
 			passwd = leer.readLine();
@@ -58,10 +58,10 @@ public class Cliente{
 		do{
 			System.out.println("Introduzca el telefono del cliente: ");
 			telefono = leer.readLine();
-		}while(telefono.length() == 0);
+		}while(telefono.matches("[0-9]{8}") == false);
 		Statement stm = con.createStatement();
 		stm.executeUpdate("insert into clientes values('"+login+"','"+passwd+"','"+nombre+"','"+apellido+"','"+direccion+"','"+telefono+"')");
-		if(existe(con, "select * from clientes where login = "+login+""))
+		if(existe(con, "select * from clientes where login = '"+login+"'"))
 			System.out.println("Datos introducidos corrctamente.");
 	}
 	public void eliminarCliente(Connection con) throws IOException, SQLException{
@@ -70,10 +70,10 @@ public class Cliente{
 		do{
 			System.out.println("Introduzca el cliente que desea eliminar: ");
 			cad = leer.readLine();
-		}while(existe(con, "select * from cliente where login = "+cad+"") == false);
+		}while(existe(con, "select * from clientes where login = '"+cad+"'") == false);
 		Statement stmt = con.createStatement();
-		stmt.executeUpdate("delete from cliente where login = "+cad+"");
-		if(existe(con, "select * from cliente where login = "+cad+"") == false)
+		stmt.executeUpdate("delete from clientes where login = '"+cad+"'");
+		if(existe(con, "select * from clientes where login = '"+cad+"'") == false)
 			System.out.println("Cliente eliminado correctamente");
 	}
 	public String getLogin() {

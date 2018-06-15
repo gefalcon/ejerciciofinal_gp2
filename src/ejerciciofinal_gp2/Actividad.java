@@ -2,6 +2,9 @@ package ejerciciofinal_gp2;
 
 import java.io.*;
 import java.sql.*;
+import java.text.SimpleDateFormat;
+
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
 public class Actividad {
 	private int id;
@@ -35,58 +38,96 @@ public class Actividad {
 		this.plazas_ocupadas = 0;
 		this.plazas_totales = 0;
 	}
-	public void añadirActividad(Statement stm) throws IOException, SQLException {
+	private boolean validarFecha(String cad) throws java.text.ParseException{
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		sdf.setLenient(true);
+		boolean enc = true;
+		try{
+			sdf.parse(cad);
+		}catch(ParseException e){
+			enc = false;
+		}
+		return enc;
+	}
+	public void añadirActividad(Statement stm) throws IOException, SQLException, java.text.ParseException {
 		BufferedReader leer = new BufferedReader (new InputStreamReader (System.in));
-		ResultSet rs = stm.executeQuery("select max(id) from actividades");
-		rs.next();
-		id = rs.getInt(1) + 1;
+		ResultSet rs = stm.executeQuery("select max(id) as max from actividades");
+		rs.first();
+		id = rs.getInt("max") + 1;
 		do{
-			System.out.println("Introduzca el nombre de la actividad");
+			System.out.println("Introduzca el nombre de la actividad: ");
 			nombre = leer.readLine();
 		}while(nombre.length() == 0);
+		rs = stm.executeQuery("select count(PABELLON) as count from pabellones");
+		rs.first();
+		int numpab = rs.getInt("count");
+		if(numpab == 0){
+			Pabellones pab = new Pabellones();
+			pab.añadirPab(stm);
+		}
+		else{
+			Pabellones[] pab = new Pabellones[numpab];
+			rs = stm.executeQuery("select * from pabellones");
+			int i = 0;
+			while(rs.next()){
+				pab[i] = new Pabellones(rs.getString("PABELLON"), rs.getString("LOCALIDAD"));
+				i++;
+			}
+			for(i = 0; i < pab.length; i++)
+				System.out.println((i + 1) + ".- " + pab[i].getNompab());
+			System.out.println((pab.length + 1) + ".- Otro.");
+			int n;
+			do{
+				System.out.println("Seleccione un pabellón: ");
+				n = Integer.parseInt(leer.readLine());
+			}while(n < 1 || n > (pab.length + 1));
+			if(n == (pab.length + 1)){
+				Pabellones pabb = new Pabellones();
+				pabb.añadirPab(stm);
+			}
+			else
+				nombre_pabellon = pab[(n - 1)].getNompab();
+		}		
 		do{
-			System.out.println("Introduzca el nombre del pabellón");
-			nombre_pabellon = leer.readLine();
-		}while(nombre_pabellon.length() == 0);
-		do{
-			System.out.println("Introduzca la descripcion");
+			System.out.println("Introduzca la descripcion: ");
 			descripcion = leer.readLine();
 		}while(descripcion.length() == 0);
 		do{
-			System.out.println("Introduzca la fecha de inicio");
+			System.out.println("Introduzca la fecha de inicio (AAAA-MM-DD): ");
 			inicio = leer.readLine();
-		}while(inicio.length() == 0);
+		}while(validarFecha(inicio) == false);
 		do{
-			System.out.println("Introduzca el precio");
+			System.out.println("Introduzca el precio: ");
 			precio = Double.parseDouble(leer.readLine());
 		}while(precio < 0);
 		do{
-			System.out.println("Introduzca el numero de plazas totales");
+			System.out.println("Introduzca el numero de plazas totales: ");
 			plazas_totales = Integer.parseInt(leer.readLine());
 		} while (plazas_totales < 0);	
 		do{
-			System.out.println("Introduzca el numero de plazas ocupadas");
+			System.out.println("Introduzca el numero de plazas ocupadas: ");
 			plazas_ocupadas = Integer.parseInt(leer.readLine());
-		} while (plazas_totales < plazas_ocupadas);
-		
-		stm.executeUpdate("INSERT INTO actividades VALUES ("+id +", "+nombre +", '"+nombre_pabellon +"', '"+descripcion +"',"+inicio +","
-				+ " "+precio +"',"+plazas_totales +"', '"+plazas_ocupadas +")");
-		
+		} while (plazas_totales < plazas_ocupadas);		
+		stm.executeUpdate("INSERT INTO actividades VALUES ("+id+", '"+nombre+"', '"+nombre_pabellon+"', '"+descripcion+"','"+inicio+"',"+precio+","+plazas_totales+","+plazas_ocupadas+")");
 	}
 	
 	public void eliminarActividad(Statement stm) throws SQLException, NumberFormatException, IOException {
 		BufferedReader leer = new BufferedReader (new InputStreamReader (System.in));
 		boolean validar = false;
 		do{
-			System.out.println("Introduzca el nombre del id de la actividad a eliminar");
+			System.out.println("Introduzca el id de la actividad a eliminar: ");
 			int valor = Integer.parseInt(leer.readLine());
 			ResultSet rs = stm.executeQuery("select id from actividades where id = "+valor +"");
-			if (!rs.next()) {
-				stm.executeUpdate("delete from actividades where id = "+valor +"");
+			if (rs.next()) {
+				stm.executeUpdate("delete from actividades where id = "+valor+"");
 				validar = true;
 			}
+			else {
+				System.out.println("No existe una actividad con ese id");
+				validar = false;
+			}
 		} while (validar == false);
-		
+		System.out.println("Se ha eliminado correctamente");
 	}
 	public int getId() {
 		return id;

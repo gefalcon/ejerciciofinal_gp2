@@ -2,6 +2,7 @@ package ejerciciofinal_gp2;
 
 import java.io.*;
 import java.sql.*;
+import java.text.ParseException;
 
 public class Main {
 	private static char menuPrincipal() throws IOException{
@@ -66,7 +67,7 @@ public class Main {
 		else System.out.println("No hay datos de clientes.");
 	}
 	private static void listarTodosActividades(Connection con, boolean f) throws SQLException{
-		if(existe(con, "")){
+		if(existe(con, "select * from actividades")){
 			Statement stm = con.createStatement();
 			ResultSet rs = stm.executeQuery("select count(ID) as count from actividades");
 			rs.first();
@@ -96,7 +97,7 @@ public class Main {
 			rs = stm.executeQuery("select * from pabellones");
 			int i = 0;
 			while(rs.next()){
-				pab[i] = new Pabellones();
+				pab[i] = new Pabellones(rs.getString("PABELLON"), rs.getString("LOCALIDAD"));
 				i++;
 			}
 			for(i = 0; i < pab.length; i++)
@@ -104,7 +105,7 @@ public class Main {
 		}
 		else System.out.println("No hay datos de pabellones.");
 	}
-	public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException {
+	public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException, ParseException {
 		Class.forName("com.mysql.jdbc.Driver");
 		String url = "jdbc:mysql://localhost/ejerciciofinal";
 		Connection con = DriverManager.getConnection(url, "root","123456");

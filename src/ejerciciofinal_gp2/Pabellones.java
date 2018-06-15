@@ -40,7 +40,7 @@ public class Pabellones {
 		BufferedReader leer=new BufferedReader(new InputStreamReader(System.in));
 		int opc;
 		do{
-			System.out.println("¿Qué desea hacer? \n 1.Volver al menu inicial \2.Introducir otro pabellon ");
+			System.out.println("¿Qué desea hacer? \n1.Continuar \n2.Añadir otro pabellon");
 			opc=Integer.parseInt(leer.readLine());
 			switch (opc) {
 			case 1:
@@ -78,7 +78,7 @@ public class Pabellones {
 		BufferedReader leer=new BufferedReader(new InputStreamReader(System.in));
 		int opc;
 		do{
-			System.out.println("¿Qué desea hacer? \n 1.Volver al menu inicial \2.Borrar otro pabellon ");
+			System.out.println("¿Qué desea hacer? \n1.Continuar \n2.Borrar otro pabellon ");
 			opc=Integer.parseInt(leer.readLine());
 			switch (opc) {
 			case 1:
@@ -109,6 +109,9 @@ public class Pabellones {
 			System.out.println("Le informamos de que el pabellon "+nompab+" no se encuentra en nuestra base de datos.");
 		}
 		siNoExiste(stmt);
+	}
+	public void almacenarPab(Statement stm) throws SQLException{
+		stm.executeUpdate("INSERT INTO pabellones VALUES ('"+nompab+"','"+locpab+"')");
 	}
 	public String getNompab() {
 		return nompab;
