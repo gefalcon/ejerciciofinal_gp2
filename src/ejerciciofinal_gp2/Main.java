@@ -32,6 +32,7 @@ public class Main {
 			System.out.println("7.- Listar todos los clientes");
 			System.out.println("8.- Listar todas las actividades");
 			System.out.println("9.- Listar todos los pabellones");
+			System.out.println("10.- Listar las actividades que tienen plazas libres");
 			System.out.println("11.- Volver");
 			n = Integer.parseInt(leer.readLine());
 		}while(n < 1 || n > 11);
@@ -44,6 +45,13 @@ public class Main {
 			System.out.println("*** CLIENTE ***");
 			System.out.println("1.- Listar todas las actividades");
 			System.out.println("2.- Listar todos los pabellones");
+			System.out.println("3.- Listar las actividades que tienen plazas libres");
+			System.out.println("4.- Listar las actividades con plazas libres que cuesten menos de una determinada cantidad");
+			System.out.println("5.- Listar las actividades con plazas libres que se realizan en un determinado pabellon");
+			System.out.println("6.- Mostrar información de una actividad especifica");
+			System.out.println("7.- Listar las actividades en las que estoy suscrito");
+			System.out.println("8.- Suscribirse a una actividad");
+			System.out.println("9.- Desuscribirse de una actividad");
 			System.out.println("10.- Volver");
 			n = Integer.parseInt(leer.readLine());
 		}while(n < 1 || n > 10);
