@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+<<<<<<< HEAD
 	<classpathentry kind="lib" path="E:/Ejercicio Final/ejerciciofinal_gp2/mysql-connector-java-3.0.17-ga-bin.jar"/>
+=======
+	<classpathentry kind="lib" path="C:/Users/raque/Documents/1-PROGRAMACIÓN/ESTUDIO/mysql-connector-java-5.1.42-bin.jar"/>
+>>>>>>> origin/raquel
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
