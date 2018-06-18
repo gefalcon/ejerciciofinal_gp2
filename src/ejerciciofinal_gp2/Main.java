@@ -172,6 +172,7 @@ public class Main {
 				}while(opc2 != 11);
 				break;
 			case 'B':
+				
 				do{
 					opc2 = menuCliente();
 					switch(opc2){
@@ -209,7 +210,8 @@ public class Main {
 				}while(opc2 != 10);
 				break;
 			case 'C':
-				
+				Cliente newuser = new Cliente();
+				newuser.pedirdatos(con);
 				break;
 			case 'D':
 				System.out.println("Saliendo...");
