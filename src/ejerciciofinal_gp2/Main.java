@@ -18,6 +18,66 @@ public class Main {
 		}while(n.matches("[A-D]{1}") == false);
 		return n.charAt(0);
 	}
+	
+	private static String pedirDatos(String cad) throws IOException
+	{
+		BufferedReader lector  = new BufferedReader(new InputStreamReader(System.in));
+		String info;	
+		do
+		{
+			System.out.println(cad+": ");
+			info=lector.readLine();
+			
+			if(info.length()==0)
+			{
+				System.out.println("Error: el campo "+cad+" es obligatorio");
+			}
+			
+		}
+		while(info.length()==0);
+		return info;
+	}
+	
+	private static boolean loginCliente(Connection con) throws SQLException, IOException
+	{
+		
+		String login, passwd;
+		Statement stm = con.createStatement();
+		
+		login=pedirDatos("USUARIO");
+		passwd=pedirDatos("CONTRASEÑA");
+		
+		ResultSet query = stm.executeQuery("SELECT * FROM CLIENTES WHERE LOGIN LIKE '"+login+ "' AND PASSWD LIKE '"+passwd+"'");
+		
+		if(query.next())
+		{
+			return true;
+		}
+		else
+		{
+			System.out.println("Error de autenticación");
+			return false;
+		}
+	}
+	
+	private static boolean loginGestor() throws IOException
+	{
+		Gestor gestor = new Gestor();
+		
+		String passwd = pedirDatos("CONTRASEÑA");
+		
+		if(passwd.equals(gestor.getPasswd()))
+		{
+			return true;
+		}
+		else
+		{
+			System.out.println("Error de autenticación");
+			return false;
+		}
+	}
+	
+	
 	private static int menuGestor() throws NumberFormatException, IOException{
 		BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
 		int n;
@@ -32,6 +92,7 @@ public class Main {
 			System.out.println("7.- Listar todos los clientes");
 			System.out.println("8.- Listar todas las actividades");
 			System.out.println("9.- Listar todos los pabellones");
+			System.out.println("10.- Listar las actividades para las que hay plazas libres");
 			System.out.println("11.- Volver");
 			n = Integer.parseInt(leer.readLine());
 		}while(n < 1 || n > 11);
@@ -105,15 +166,52 @@ public class Main {
 		}
 		else System.out.println("No hay datos de pabellones.");
 	}
+	
+	
+	public static void listarActividadesLibres(Connection con) throws SQLException
+	{
+		Statement stm = con.createStatement();
+		boolean enc=false;
+		
+		ResultSet lista = stm.executeQuery("SELECT * FROM ACTIVIDADES WHERE PLAZAS_TOTALES-PLAZAS_OCUPADAS>0");
+		
+		try
+		{
+			while(lista.next())
+			{
+				enc=true;
+				System.out.println("Id:"+lista.getInt("ID"));
+				System.out.println("Nombre: "+lista.getString("NOMBRE"));
+				System.out.println("Pabellón: "+lista.getInt("NOMBRE_PABELLON"));
+				System.out.println("Descripción: "+lista.getString("DESCRIPCIÓN"));
+				System.out.println("Inicio: " +lista.getDate("INICIO"));
+				System.out.println("Precio: "+lista.getDouble("PRECIO"));
+				System.out.println("Plazas totales: "+lista.getDouble("PLAZAS_TOTALES"));
+				System.out.println("Plazas libres: "+lista.getDouble("PLAZAS_LIBRES"));
+				System.out.println("-----------------------------------");
+			}
+		}
+		catch(SQLException e){}
+		
+		if(enc==false)
+		{
+			System.out.println("Lo siento, no hay actividades libres");
+		}
+	}
+	
+	
+	
 	public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException, ParseException {
 		Class.forName("com.mysql.jdbc.Driver");
 		String url = "jdbc:mysql://localhost/ejerciciofinal";
-		Connection con = DriverManager.getConnection(url, "root","123456");
+		Connection con = DriverManager.getConnection(url, "root","root");
 		char opc1;
 		int opc2;
 		Cliente cli;
 		Actividad act;
 		Pabellones pab;
+	
+		
 		do{
 			opc1 = menuPrincipal();
 			switch(opc1){
@@ -155,7 +253,7 @@ public class Main {
 						listarTodosPabellones(con);
 						break;
 					case 10:
-						
+						listarActividadesLibres(con);
 						break;
 					case 11:
 						System.out.println("Volviendo...");
@@ -173,8 +271,7 @@ public class Main {
 					case 2:
 						listarTodosPabellones(con);
 						break;
-					case 3:
-						
+					case 3: listarActividadesLibres(con);						
 						break;
 					case 4:
 						
