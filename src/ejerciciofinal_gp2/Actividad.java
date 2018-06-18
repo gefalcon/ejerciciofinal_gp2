@@ -4,8 +4,6 @@ import java.io.*;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
-
 public class Actividad {
 	private int id;
 	private String nombre;
@@ -38,13 +36,13 @@ public class Actividad {
 		this.plazas_ocupadas = 0;
 		this.plazas_totales = 0;
 	}
-	private boolean validarFecha(String cad) throws java.text.ParseException{
+	private boolean validarFecha(String cad){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		sdf.setLenient(true);
+		sdf.setLenient(false);
 		boolean enc = true;
 		try{
 			sdf.parse(cad);
-		}catch(ParseException e){
+		}catch(java.text.ParseException e){
 			enc = false;
 		}
 		return enc;
@@ -64,6 +62,7 @@ public class Actividad {
 		if(numpab == 0){
 			Pabellones pab = new Pabellones();
 			pab.añadirPab(stm);
+			nombre_pabellon = pab.getNompab();
 		}
 		else{
 			Pabellones[] pab = new Pabellones[numpab];
@@ -84,6 +83,7 @@ public class Actividad {
 			if(n == (pab.length + 1)){
 				Pabellones pabb = new Pabellones();
 				pabb.añadirPab(stm);
+				nombre_pabellon = pabb.getNompab();
 			}
 			else
 				nombre_pabellon = pab[(n - 1)].getNompab();
