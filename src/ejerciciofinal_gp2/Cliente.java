@@ -58,7 +58,7 @@ public class Cliente{
 		do{
 			System.out.println("Introduzca el telefono del cliente: ");
 			telefono = leer.readLine();
-		}while(telefono.matches("[0-9]{8}") == false);
+		}while(telefono.matches("[0-9]{9}") == false);
 		Statement stm = con.createStatement();
 		stm.executeUpdate("insert into clientes values('"+login+"','"+passwd+"','"+nombre+"','"+apellido+"','"+direccion+"','"+telefono+"')");
 		if(existe(con, "select * from clientes where login = '"+login+"'"))
